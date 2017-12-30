@@ -66,15 +66,24 @@ ORDER BY Last_Name
     
 /* 4b. List last names of actors and the number of actors who have that last name, but only for names that are shared by at least two actors*/
     
-SELECT Last_Name, count(*) 
-FROM Actor
-GROUP BY Last_Name  
-ORDER BY Last_Name
+SELECT last_name, COUNT(*) last_name
+FROM actor
+GROUP BY last_name 
+HAVING COUNT(*) last_name >= 2;
+ORDER BY COUNT(last_name) DESC;
+
 /* 4c. Oh, no! The actor `HARPO WILLIAMS` was accidentally entered in the `actor` table as `GROUCHO WILLIAMS`, the name of Harpo's second cousin's husband's yoga teacher. Write a query to fix the record.*/
-update my_table
-set path = replace(path, 'GROUCH', 'HARPO')
+
+UPDATE actor 
+SET first_name = "HARPO"
+WHERE actor_id = 172;
     
 /* 4d. Perhaps we were too hasty in changing `GROUCHO` to `HARPO`. It turns out that `GROUCHO` was the correct name after all! In a single query, if the first name of the actor is currently `HARPO`, change it to `GROUCHO`. Otherwise, change the first name to `MUCHO GROUCHO`, as that is exactly what the actor will be with the grievous error. BE CAREFUL NOT TO CHANGE THE FIRST NAME OF EVERY ACTOR TO `MUCHO GROUCHO`, HOWEVER! (Hint: update the record using a unique identifier.)*/
+
+UPDATE actor 
+SET first_name = "GROUCHO"
+WHERE actor_id = 172;
+
 /* 5a. You cannot locate the schema of the `address` table. Which query would you use to re-create it?*/
 
 describe sakila.address;
@@ -130,11 +139,11 @@ SELECT title
 FROM film
 WHERE (title LIKE 'q%' OR title LIKE 'k%')
 AND language_id IN
-    (
+(
     SELECT language_id
     FROM language
     WHERE name = 'English'
-    );
+);
 
 /* 7b. Use subqueries to display all actors who appear in the film `Alone Trip`.*/
 
@@ -149,8 +158,7 @@ WHERE actor_id IN
    SELECT film_id
    FROM film
    WHERE title = 'ALONE TRIP'
-  )
-);
+));
    
 /* 7c. You want to run an email marketing campaign in Canada, for which you will need the names and email addresses of all Canadian customers. Use joins to retrieve this information.*/
 
